@@ -1,37 +1,40 @@
 # ESP3D[![Code Climate](https://codeclimate.com/github/luc-github/ESP3D/badges/gpa.svg)](https://codeclimate.com/github/luc-github/ESP3D)
 
-Firmware for ESP8266/ESP8285 used with 3D printer using [arduino core version](https://github.com/esp8266/Arduino)   
+Firmware for ESP8266/ESP8285  and ESP32 used with 3D printer using [ESP8266 core version](https://github.com/esp8266/Arduino)  and [ESP32 core version](https://github.com/espressif/arduino-esp32)   
+
 This firmware allows not only to have a cheap bridge between Wifi and serial, but also to have a web UI to configure wifi, to monitor 3D printer and even control it, and to make things easy,
 UI is fully customizable without reflashing FW.
-Firmware should work with any 3D printer firmware (repetier/marlin/etc..) if serial connection has correct setup.
-I currently use it with my personnal flavor of [repetier for Due based boards](https://github.com/luc-github/Repetier-Firmware-0.92).
-Please use ESP with at least 1M flash, for ESP with 512K there is limited version [here](https://github.com/luc-github/ESP3D/tree/ESP-512K-64KSPIFFS)
 
-<u>Stable version:</u>    
+Firmware should work with any 3D printer firmware (repetier/marlin/smoothieware using GCODE) if serial connection has a correct setup.
+I currently use it with my personnal flavor of [repetier for Due based boards](https://github.com/luc-github/Repetier-Firmware-0.92).
+
+The web interface files are present in data directory but UI has it's own repository [ESP3D-WEBUI](https://github.com/luc-github/ESP3D-WEBUI).
+* be aware  ESP3D-WEBUI is for firmware 0.9.99 minimum - previous released version use tpl files which are no more used.
+
+<u>Stable version (ESP8266 only):</u>    
 Arduino ide 1.6.5 with stable [2.0.0](http://arduino.esp8266.com/versions/2.0.0/package_esp8266com_index.json) from ESP8266, please use https://github.com/luc-github/ESP3D/releases/tag/v0.5.1    
 Arduino ide 1.6.8 with stable [2.2.0](http://arduino.esp8266.com/versions/2.2.0/package_esp8266com_index.json) from ESP8266, please use https://github.com/luc-github/ESP3D/releases/tag/v0.6.2    
-
-<u>Development version:</u>    
-Arduino ide 1.6.9 with git from ESP8266 : [![Build Status](https://travis-ci.org/luc-github/ESP3D.svg?branch=master)](https://travis-ci.org/luc-github/ESP3D)    
+Arduino ide 1.8.5 with stable [2.4.0](http://arduino.esp8266.com/versions/2.4.0/package_esp8266com_index.json) from ESP8266, please use https://github.com/luc-github/ESP3D/releases/tag/1.0 [![Build Status](https://travis-ci.org/luc-github/ESP3D.svg?branch=master)](https://travis-ci.org/luc-github/ESP3D)    
+ 
+<u>[Development version for 2.0 (2.0 branch)](https://github.com/luc-github/ESP3D/tree/2.0) & [ESP-WEBUI (2.0 branch)](https://github.com/luc-github/ESP3D-WEBUI/tree/2.0):</u>    
+Arduino ide 1.8.5 with git version from ESP8266 or ESP32 for 100% support of ESP32 : [![Build Status](https://travis-ci.org/luc-github/ESP3D.svg?branch=2.0)](https://travis-ci.org/luc-github/ESP3D)   
 
 [All releases](https://github.com/luc-github/ESP3D/wiki)
-
-:question:Any question ? check [Wiki](https://github.com/luc-github/ESP3D/wiki/Install-Instructions) or [![Join the chat at https://gitter.im/luc-github/ESP3D](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/luc-github/ESP3D?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)   
-:exclamation:Any issue ? check [Wiki](https://github.com/luc-github/ESP3D/wiki/Install-Instructions) and [FAQ](https://github.com/luc-github/ESP3D/issues?utf8=%E2%9C%93&q=label%3AFAQ+) or [submit ticket](https://github.com/luc-github/ESP3D/issues)    
-
 
 :+1:Thanks
 * to @disneysw for bringing this module idea
 * to @lkarlslund for suggestion about independent reset using GPIO2
-* to all contributors (treepleks, j0hnlittle, openhardwarecoza, TRoager, all feedbacks owners and donations)
+* to Roy Cortes from http://www.panucatt.com for supporting and pushing me implementing great features
+* to all contributors, feedbacks owners and donations.
 
+## Donate
 Every support is welcome: [<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG_global.gif" border="0" alt="PayPal – The safer, easier way to pay online.">](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8FFE7NA4LJWQ)    
 Especially if need to buy new modules for testing.
 
-##Features
+## Features
 * Serial/Wifi bridge using configurable port 8888, here to enable/disable [TCP_IP_DATA_FEATURE](https://github.com/luc-github/ESP3D/blob/master/esp3d/config.h)
 * Use GPIO2 to ground to reset all settings in hard way - 2-6 sec after boot / not before!! Set GPIO2 to ground before boot change boot mode and go to special boot that do not reach FW. Currently boot take 10 sec - giving 8 seconds to connect GPIO2 to GND and do an hard recovery for settings, here to enable/disable [RECOVERY_FEATURE](https://github.com/luc-github/ESP8266/blob/master/esp8266/config.h)   
-* Wifi configuration by web browser (Station or Access point)
+* Complete configuration by web browser (Station or Access point) or by Serial commands
 * Authentication for sensitive pages, here to enable/disable [AUTHENTICATION_FEATURE](https://github.com/luc-github/ESP3D/blob/master/esp3d/config.h)
 * Update firmware by web browser, here to enable/disable [WEB_UPDATE_FEATURE](https://github.com/luc-github/ESP3D/blob/master/esp3d/config.h)
 * Control ESP module using commands on serial or data port, here to enable/disable [SERIAL_COMMAND_FEATURE](https://github.com/luc-github/ESP3D/blob/master/esp3d/config.h)
@@ -41,8 +44,10 @@ Especially if need to buy new modules for testing.
 * SSDP, this feature is a discovery protocol, supported on Windows out of the box, here to enable/disable [SSDP_FEATURE](https://github.com/luc-github/ESP3D/blob/master/esp3d/config.h)
 * Printer monitoring / control (temperatures/speed/jog/list SDCard content/launch,pause or stop a print/etc...), here to enable/disable [MONITORING_FEATURE/INFO_MSG_FEATURE/ERROR_MSG_FEATURE/STATUS_MSG_FEATURE](https://github.com/luc-github/ESP3D/blob/master/esp3d/config.h)
 * Fail safe mode (Access point)is enabled if cannot connect to defined station at boot.
+* The web ui add even more feature : https://github.com/luc-github/ESP3D-WEBUI/blob/master/README.md#features  
 
-##Web configuration      
+
+## Web configuration      
 *Wifi Mode : Access point / Client station  
 *IP Generation: DHCP/Static IP      
 *IP/MASK/GATEWAY for static data    
@@ -50,7 +55,7 @@ Especially if need to buy new modules for testing.
 *web port and data port      
 
     
-##Default Configuration      
+## Default Configuration      
 Default Settings:    
 AP:ESP8266    
 PW:12345678   
@@ -63,7 +68,7 @@ IP Mode: Static IP
 IP: 192.168.0.1   
 Mask: 255.255.255.0   
 GW:192.168.0.1    
-Baud rate: 9600   
+Baud rate: 115200   
 Web port:80   
 Data port: 8888     
 Web Page refresh: 3 secondes    
@@ -72,200 +77,61 @@ Password: admin
 User:user   
 Password: user   
 
-These are the pages defined using template:    
-Home page :     
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/Page1.png><br>
-System Configuration Page:     
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/Page2.png><br>     
-Access Point Configuration Page:    
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/Page3.png><br>     
-Client Configuration Page:     
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/Page4.png><br>     
-Printer Status Page for 64K SPIFFS, due to limited space available no fancy:     
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/Page5-2.png><br>    
-Printer Status Page for more than 64K SPIFFS, fancy one:     
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/page5.png><br>     
-Extra Settings Page, for web UI and for printer:     
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/Page6.png><br>     
-Change password Page:    
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/Page7.png><br>     
-Login Page:    
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/Page8.png><br>     
-the template files are stored on SPIFFS:    
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/UI/files.png><br>
-and uploaded using [pluggin IDE](http://esp8266.github.io/Arduino/versions/2.1.0/doc/filesystem.html#uploading-files-to-file-system)    
-Any files on SPIFFS can be called on web interface without having the path hard coded, this give more flexibility, favicon.ico is a good example of it.         
-So UI is kind of separated from FW which allow easier modifications. For this a light file manager is available in extra settings page, it allows to upload/download/delete files. 
-Because SPIFFS is flat filesystem, no directory management is necessary, so it is very simple.
 
-Additionally 404.tpl (the page not found) and restart.tpl(restart page when applying changes) are not mandatory, a fail safe version is embedded if they are not present.     
 
-##Direct commands:    
-```
-* Change STA SSID    
-[ESP100]<SSID>   
-if authentication is on, need admin password   
-[ESP100]<SSID>pwd=<admin password>   
+## Direct commands:    
+Check wiki : https://github.com/luc-github/ESP3D/wiki/Direct-ESP3D-commands
 
-* Change STA Password    
-[ESP101]<Password>   
-if authentication is on, need admin password   
-[ESP101]<Password>pwd=<admin password>   
+## Installation
+1. Please follow installation of the ESP core you want to use : [ESP8266 core version](https://github.com/esp8266/Arduino)  or [ESP32 core version](https://github.com/espressif/arduino-esp32)   
+2.  Add missing libraries if you target ESP32 present in libraries directory
+* DNSServer (from https://github.com/bbx10/DNSServer_tng)
+* WebServer (from https://github.com/bbx10/WebServer_tng)
+* NetBIOS and SSDP are currently disabled for ESP32 as not yet supported
+3. Compile project (ESP3D.ino) according target: ESP8266 board or ESP32 board, please review config.h to enable disable a feature, by default athenticatio is disabled and all others are enabled.   
+* for ESP8266 set CPU freq to 160MHz for better (https://github.com/luc-github/ESP3D/wiki/Install-Instructions)
+4. Upload the data content on ESP3D file system
+* Using SPIFFS uploader, this plugin and install instructions is available on each ESP core - please refere to it
+* Using embedded uploader (you may need to format SPIFFS using : [ESP710]FORMAT on ESP8266 first)    
+if embedded uploader does not show up you can force it ti display using : http://your_IP_address?forcefallback=yes    
+<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/docs/embedded.png><br>
 
-* Change Hostname   
-[ESP102]<hostname>   
-if authentication is on, need admin password   
-[ESP102]<hostname>pwd=<admin password>   
+## Update
+* Generate a binary using the export binary menu from Arduino IDE and upload it using ESP-WEBUI or embedded interface  
 
-* Change Wifi mode (STA/AP)   
-[ESP103]<mode>   
-if authentication is on, need admin password   
-[ESP103]<mode>pwd=<admin password>   
+<H3>:warning:Do not flash your Printer fw with ESP connected - it bring troubles, at least on DaVinci</H3>
 
-* Change STA IP mode (DHCP/STATIC)   
-[ESP104]<mode>   
-if authentication is on, need admin password   
-[ESP104]<mode>pwd=<admin password>   
+## Contribution/customization
+* To style the code before pushing PR please use [astyle --style=otbs *.h *.cpp *.ino](http://astyle.sourceforge.net/)   
+* The embedded page is created using nodejs then gulp to generate a compressed html page (tool.html.gz), all necessary modules can be installed using the install.bat file content, then it is included using bin2c (https://sourceforge.net/projects/bin2c/) to generate the  h file used to create the file nofile.h, update the array and size according new out.h.   
+* The current UI is located [here](https://github.com/luc-github/ESP3D-WEBUI)
+* An optional UI is under development using old repetier UI - check [UI\repetier\testui.htm] (https://github.com/luc-github/ESP3D/blob/master/UI/repetier/testui.htm) file   
 
-* Change AP SSID   
-[ESP105]<SSID>   
-if authentication is on, need admin password   
-[ESP105]<SSID>pwd=<admin password>   
-
-* Change AP Password   
-[ESP106]<Password>  
-if authentication is on, need admin password  
-[ESP106]<Password>pwd=<admin password>   
-
-* Change AP IP mode (DHCP/STATIC)   
-[ESP107]<mode>   
-if authentication is on, need admin password   
-[ESP107]<mode>pwd=<admin password>   
-
-* Get current IP  
-[ESP111]<header answer>  
-
-* Get hostname   
-[ESP112]<header answer>   
-
-* Get/Set ESP mode   
-cmd can be RESET, SAFEMODE, CONFIG, RESTART   
-[ESP444]<cmd>   
-if authentication is on, need admin password for RESET, RESTART and SAFEMODE   
-[ESP444]<cmd>pwd=<admin password>   
-
-* Change / Reset user password   
-[ESP555]<password>pwd=<admin password>   
-if no password set it use default one   
-
-* Read SPIFFS file and send each line to serial   
-[ESP700]<filename>   
-
-* Get fw version    
-[ESP800]<header answer>   
-
-* Clear status/error/info list   
-cmd can be ALL, ERROR, INFO, STATUS   
-[ESP999]<cmd>   
+Feedback/suggestion/discussions are always welcome   
  
- ```
-##Installation
-* For stable:
-Please use [Arduino IDE 1.6.5](http://arduino.cc/en/Main/Software)  with the esp8266 module from board manager use 2.0.0 stable version by adding in your preferences http://arduino.esp8266.com/version/2.0.0/package_esp8266com_index.json
-with https://github.com/luc-github/ESP3D/releases/tag/v0.5.1
-or
-use [Arduino IDE 1.6.8](http://arduino.cc/en/Main/Software)  with the esp8266 module from board manager use 2.2.0 stable version by adding in your preferences http://arduino.esp8266.com/stable/package_esp8266com_index.json
-with https://github.com/luc-github/ESP3D/releases/tag/v0.6.2   
+## Need more information about supported boards or wiring ?
+[Check the wiki](https://github.com/luc-github/ESP3D/wiki)
 
-* For development:
-Please use [Arduino IDE 1.6.8](http://arduino.cc/en/Main/Software) and [git version of esp8266 module](http://esp8266.github.io/Arduino/versions/2.2.0/doc/installing.html#using-git-version)
+## :question:Any question ?   
+Check [Wiki](https://github.com/luc-github/ESP3D/wiki/Install-Instructions) or [![Join the chat at https://gitter.im/luc-github/ESP3D](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/luc-github/ESP3D?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)   
 
-* To flash the module :   
-You must define the targeted FW,  can be REPETIER (Original Repetier)/ REPETIER4DV (Repetier for Davinci) / MARLIN (Marlin)/ SMOOTHIEWARE (Smoothieware) in config.h and enable/disable any others features
-```
-//MDNS_FEATURE: this feature allow  type the name defined
-//in web browser by default: http:\\esp8266.local and connect
-//#define MDNS_FEATURE
+## :exclamation:Any issue/feedback ?    
+Check [Wiki](https://github.com/luc-github/ESP3D/wiki/Install-Instructions) and [FAQ](https://github.com/luc-github/ESP3D/issues?utf8=%E2%9C%93&q=label%3AFAQ+) or [submit ticket](https://github.com/luc-github/ESP3D/issues)    
 
-//SSDD_FEATURE: this feature is a discovery protocol, supported on Windows out of the box
-#define SSDP_FEATURE
+## ESP3D is used by :
+* Custom version is used on azteeg mini wifi : http://www.panucatt.com/azteeg_X5_mini_reprap_3d_printer_controller_p/ax5mini.htm
+* GRBL_Esp32 a GRBL port on ESP32 done by @bdring - https://github.com/bdring/Grbl_Esp32   
+[![](https://img.youtube.com/vi/7vtWNn9jyDs/mqdefault.jpg)](https://www.youtube.com/watch?v=7vtWNn9jyDs)       
+* Marlin_ESP32 a Marlin port on ESP32 done by @simon-jouet is under sync : https://github.com/luc-github/Marlin/tree/eps32_webui 
+* More to come...
 
-//CAPTIVE_PORTAL_FEATURE: In SoftAP redirect all unknow call to main page
-#define CAPTIVE_PORTAL_FEATURE
-
-//AUTHENTICATION_FEATURE: protect pages by login password
-#define AUTHENTICATION_FEATURE
-
-//WEB_UPDATE_FEATURE: allow to flash fw using web UI
-#define WEB_UPDATE_FEATURE
-
-//SERIAL_COMMAND_FEATURE: allow to send command by serial
-#define SERIAL_COMMAND_FEATURE
-
-//TCP_IP_DATA_FEATURE: allow to connect serial from TCP/IP
-#define TCP_IP_DATA_FEATURE
-
-//RECOVERY_FEATURE: allow to use GPIO2 pin as hardware reset for EEPROM, add 8s to boot time to let user to jump GPIO2 to GND
-#define RECOVERY_FEATURE
-
-//FIRMWARE_TARGET: the targeted FW, can be REPETIER (Original Repetier)/ REPETIER4DV (Repetier for Davinci) / MARLIN (Marlin)/ SMOOTHIEWARE (Smoothieware)
-#define FIRMWARE_TARGET REPETIER4DV
-
-//DEBUG Flag
-//#define DEBUG_ESP3D 
-```
+If you use ESP3D on your product, drop me a message so I can link your product page here.   
 
 
-For better performance select CPU Frequency to be 160MHz instead of default 80MHz   
-Use IDE to upload directly  (latest version of board manager module generate one binary)     
-* To flash the html files present in data directory you need to use another tool, installation and usage is explained [here](https://github.com/esp8266/Arduino/blob/master/doc/filesystem.md#uploading-files-to-file-system)    
-Once flashed you also can use the web updater to flash new FW in System Configuration Page or go to settings to change html files 
 
-<H3>:warning:Do not flash Printer fw with ESP connected - it bring troubles, at least on DaVinci</H3>
-
-##Hardware connection
-
-* Use GPIO2 to ground to reset all settings in hard way - 2-6 sec after boot / not before!! Set GPIO2 to ground before boot change boot mode and go to special boot that do not reach FW. Currently boot take 10 sec - giving 8 seconds to connect GPIO2 to GND and do an hard recovery for settings   
-* Use GPIO0 to ground to be in update mode   
-
-For ESP01:   
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/HW/Wires.png><br>
-
-For ESP12E:   
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/HW/WiresESP12E.png><br>
-
-For Davinci Board:   
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/Davinci/davinci.png><br>
-
-For RADDS Board:   
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/RADDS/RADDS.png><br>
-
-##Contribution/customization
-To modifying and Testing tpl files a local tool has been created by [j0hnlittle](https://github.com/j0hnlittle) to avoid to upload every time your tpl files just to see the results of your modifications. It is a python script (2.7+) located in tools directory, launch it: python server.py, then open browser: http://localhost:8080   
-It will display the web ui and allow some navigation   
-
-To style the code before pushing PR please use [astyle --style=otbs *.h *.cpp *.ino](http://astyle.sourceforge.net/)
-
-Feedback/suggestion/discussions are always welcome
- 
-
-##Result of ESP12E on Davinci    
-I use a proto board to connect ESP12E socket, one micro switch for recovery, one jumper for normal usage/ flash, I did not put hardware switch.    
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/Davinci/board.jpg><br>  
-Connected to Davinci:    
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/Davinci/boardconnected.jpg><br>  
-The back cover:    
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/Davinci/backside.jpg><br>  
-The screen when connected to AP:    
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/Davinci/screen.jpg><br>   
- 
-##Result of ESP12E on Due/RADDS 
- the rendering on screen when connection to AP is done:   
-<img src=https://raw.githubusercontent.com/luc-github/ESP3D/master/images/RADDS/screen.jpg><br> 
-
-
-##TODO   
+## TODO/On going  :   
+-- Version 2.X 
 -- Close open topics    
 -- Do testing (a lot)    
 -- UI Improvement    
--- Printer EEPROM management
+-- ESP3D V2
